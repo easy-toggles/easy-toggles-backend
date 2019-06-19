@@ -28,7 +28,6 @@
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
     "nconf": "^0.10.0",
-    "ramda": "^0.26.1",
-    "ramda-extensions": "^0.2.1"
+    "ramda": "^0.26.1"
   }
 }
