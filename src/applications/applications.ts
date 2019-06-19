@@ -19,4 +19,9 @@ const update = async (context, next) => {
   return next()
 }
 
-export { add, get, update }
+const list = async (context, next) => {
+  context.body = await model.list()
+  return next()
+}
+
+export { add, get, update, list }

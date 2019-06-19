@@ -9,6 +9,7 @@ const buildApp = (): Koa => {
   const app = new Koa()
   const router = new Router()
 
+  router.get('/api/applications', applications.list)
   router.get('/api/applications/:id', applications.get)
   router.post('/api/applications', applications.add)
   router.patch('/api/applications/:id', applications.update)

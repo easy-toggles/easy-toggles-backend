@@ -1,5 +1,7 @@
+import { map } from 'ramda'
 import { Datastore } from '@google-cloud/datastore'
 import config from '../config'
+
 
 const datastore = new Datastore({
   projectId: config.get('GCLOUD_PROJECT')
@@ -25,7 +27,6 @@ async function save(key, data) {
       key: key,
       data: [
         { name: 'name', value: data.name },
-        { name: 'environment', value: data.environment },
         { name: 'config', value: data.config }
       ]
     })
@@ -43,4 +44,16 @@ async function read(id: number) {
   return entity
 }
 
-export { update, create, read }
+async function list() {
+  const query = datastore.createQuery(kind)
+  const [entities] = await datastore.runQuery(query)
+
+  return map((entity) => {
+    return {
+      id: entity[datastore.KEY].id,
+      name: entity.name
+    }
+  }, entities)
+}
+
+export { update, create, read, list }
