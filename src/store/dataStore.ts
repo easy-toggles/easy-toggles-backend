@@ -35,7 +35,7 @@ async function save(key, data) {
     transaction.rollback()
   }
 
-  return { id: key.id }
+  return { name: data.name, id: key.id }
 }
 
 async function read(id: number) {
