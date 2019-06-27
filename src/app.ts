@@ -14,11 +14,12 @@ const buildApp = (): Koa => {
   router.post('/api/applications', applications.add)
   router.patch('/api/applications/:id', applications.update)
 
-  router.post('/api/features/:id', features.get)
+  router.get('/api/features/:id', features.get)
 
   app.use(bodyParser())
   app.use(json())
   app.use(router.routes())
+  app.use(router.allowedMethods())
 
   return app
 }

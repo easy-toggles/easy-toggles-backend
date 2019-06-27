@@ -11,6 +11,7 @@ import {
   reduce,
   toPairs,
   pathOr,
+  isEmpty,
   Pred
 } from 'ramda'
 
@@ -52,11 +53,11 @@ const validateDependencies = curry(
     reduceObjIndexed(
       (acc: Features, config: ConfigEntry, key: string) => {
         let value
-        if (config.dependsOn) {
+        if (isEmpty(config.dependsOn)) {
+          value = features[key]    
+        } else {
           const isFeatureOff = (feature: string) => where({ [feature]: equals(false) }, features)
           value = !any(isFeatureOff, config.dependsOn)
-        } else {
-          value = features[key]
         }
         return { ...acc, [key]: value }
       },
@@ -94,7 +95,7 @@ const validateFeatures = curry(
 
         if (feature.enabled === false) {
           value = false
-        } else if (isNil(feature.rules)) {
+        } else if (isEmpty(feature.rules)) {
           value = pathOr(true, ['enabled'], feature)
         } else {
           const values = map((rule: Rule) => validateFeatureRule(params, rule))(feature.rules)
@@ -110,6 +111,7 @@ const validateFeatures = curry(
 const parser = curry(
   (config: Config, params: Params): Features => {
     const features = validateFeatures(params, config)
+    
     const updatedFeatures = {
       ...features,
       ...getFeaturesToTurnOff(features, config)
