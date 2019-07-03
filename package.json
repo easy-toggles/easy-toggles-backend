@@ -11,6 +11,7 @@
   "author": "Daniela Araújo",
   "license": "ISC",
   "devDependencies": {
+    "@types/graphql": "^14.2.2",
     "@types/koa": "^2.0.48",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-json": "^2.0.18",
@@ -23,10 +24,15 @@
   },
   "dependencies": {
     "@google-cloud/datastore": "^4.1.1",
+    "apollo-datasource": "^0.5.0",
+    "apollo-server-koa": "^2.7.0-alpha.3",
+    "graphql": "^14.4.1",
+    "graphql-type-json": "^0.3.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
+    "merge-graphql-schemas": "^1.5.8",
     "nconf": "^0.10.0",
     "ramda": "^0.26.1"
   }

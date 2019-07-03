@@ -1,0 +1,22 @@
+scalar JSON
+
+type Query {
+  workspace(applicationId: ID!, workspaceId: ID!): Workspace!
+}
+
+type Mutation {
+  createWorkspace(workspace: WorkspaceInput!): Workspace!
+  updateWorkspace(workspaceId: ID!, workspace: WorkspaceInput!): Workspace!
+}
+
+type Workspace {
+  id: ID!
+  name: String!
+  features: JSON
+}
+
+input WorkspaceInput {
+  name: String!
+  applicationId: ID!
+  features: JSON!
+}
