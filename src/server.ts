@@ -1,8 +1,22 @@
 import config from './config'
-import { app } from './app'
 
-const port = config.get('PORT')
+import { GraphQLServer } from "graphql-yoga";
+import "reflect-metadata";
+import { buildSchema } from "type-graphql";
+import WorkspaceResolver from "./resolvers/workspace-resolver";
+import ToggleResolver from "./resolvers/toggle-resolver";
 
-app.listen(port, () => {
-  console.log(`listening at port ${port}`)
-})
+async function bootstrap() {
+  const schema = await buildSchema({
+    resolvers: [WorkspaceResolver, ToggleResolver],
+    emitSchemaFile: true,
+  });
+
+  const server = new GraphQLServer({
+    schema,
+  });
+
+  server.start(config.get('APOLLO_OPTIONS'), ({ port }) => console.log(`Server is running on http://localhost:${port}`));
+}
+
+bootstrap();

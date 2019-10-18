@@ -5,29 +5,38 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf dist/ && tsc",
+    "start:db": "gcloud beta emulators datastore start --data-dir=./data && $(gcloud beta emulators datastore env-init)",
     "start:dev": "NODE_ENV=development nodemon",
-    "start:prod": "NODE_ENV=production node dist/server.js"
+    "start:prod": "NODE_ENV=production node dist/server.js",
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "author": "Daniela Araújo",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^24.0.19",
     "@types/koa": "^2.0.48",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-json": "^2.0.18",
     "@types/koa-router": "^7.0.40",
     "@types/nconf": "^0.10.0",
     "@types/node": "^12.0.8",
+    "jest": "^24.9.0",
     "nodemon": "^1.19.1",
+    "ts-jest": "^24.1.0",
     "ts-node": "^8.2.0",
     "typescript": "^3.5.2"
   },
   "dependencies": {
     "@google-cloud/datastore": "^4.1.1",
+    "graphql-yoga": "^1.18.3",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
     "nconf": "^0.10.0",
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^0.17.5"
   }
 }
