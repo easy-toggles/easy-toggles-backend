@@ -20,6 +20,6 @@ const workspaceFromToggle = (toggle: ToggleData) => workspaces.find(workspace =>
 
 const fetchAll = () => toggles;
 
-const fetchTogglesDependsOn = (toggle: ToggleData) => toggles.filter(toggle => toggle.dependsOn.includes(toggle.id));
+const fetchTogglesDependsOn = (toggle: ToggleData) => toggles.filter(t => toggle.dependsOn.includes(t.id));
 
 export { enable, fetchAll, fetchTogglesDependsOn, find, workspaceFromToggle }
