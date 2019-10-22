@@ -1,8 +1,18 @@
-import { toggles } from "../data";
-import { fetchAll, find, workspaceFromToggle, fetchTogglesDependsOn } from "./toggle-service";
+import *  as model from '../store/toggle-model';
+import { ImportMock } from 'ts-mock-imports';
+import { toggles } from '../data'
+import { fetchAll, find, workspaceFromToggle, fetchTogglesDependsOn, update } from "./toggle-service";
 import 'jest-extended';
 
+
+const stubList = ImportMock.mockFunction(model, 'list', toggles);
+
 describe('Toggle Service', function () {
+
+    beforeEach(() => {
+        stubList.restore()
+    });
+
     it('fetchAll should return all toggles', function () {
         const result = fetchAll();
 
@@ -17,8 +27,7 @@ describe('Toggle Service', function () {
     });
 
     it('workspaceFromToggle should return workspace information from toggle', function () {
-        const targetToggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] };
-        const result = workspaceFromToggle(targetToggle);
+        const result = workspaceFromToggle({ id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] });
         const expected = { id: 1, name: "dev" };
 
         expect(result).toEqual(expected);
@@ -31,6 +40,24 @@ describe('Toggle Service', function () {
 
         expect(result).toIncludeAllMembers(expected);
     })
+
+    it('update should update the referenced toggle`s id name when an existent id and a diffrent name are passed', () => {
+        let targetToggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] };
+        targetToggle.name = "Feature 2A";
+        const result = update(targetToggle);
+        const expected = { id: 1, name: "Feature 2A", enabled: true, workspace_id: 1, dependsOn: [] }
+
+        expect(result).toStrictEqual(expected);
+    });
+
+    it('update should update the referenced toggle`s id enable flag when an existent id and a diffrent status are passed', () => {
+        let targetToggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] };
+        targetToggle.enabled = !targetToggle.enabled;
+        const result = update(targetToggle);
+        const expected = { id: 1, name: "Feature A", enabled: false, workspace_id: 1, dependsOn: [] }
+
+        expect(result).toStrictEqual(expected);
+    });
 
 });
 
