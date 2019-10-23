@@ -1,5 +1,5 @@
-import { workspaces } from "../data";
 import { Toggle, list } from "../store/toggle-model";
+import { WorkspaceData } from "../data";
 
 const enable = (toggleId: number): Toggle => {
     const toggle = list().find(toggle => {
@@ -17,8 +17,6 @@ const enable = (toggleId: number): Toggle => {
 
 const find = (id: number): Toggle | undefined => list().find(toggle => toggle.id === id);
 
-const workspaceFromToggle = (toggle: Toggle) => workspaces.find(workspace => workspace.id === toggle.workspace_id);
-
 const fetchAll = () => list();
 
 const fetchTogglesDependsOn = (toggle: Toggle) => list().filter(t => toggle.dependsOn.includes(t.id));
@@ -35,4 +33,6 @@ const update = (toggle: Toggle) => {
     return result;
 }
 
-export { enable, fetchAll, fetchTogglesDependsOn, find, workspaceFromToggle, update }
+const togglesFromWorkspace = (workspace: WorkspaceData) => list().filter(toggle => toggle.workspace_id === workspace.id);
+
+export { enable, fetchAll, fetchTogglesDependsOn, find, togglesFromWorkspace, update }

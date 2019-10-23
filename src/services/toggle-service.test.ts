@@ -1,20 +1,23 @@
 import *  as model from '../store/toggle-model';
 import { ImportMock } from 'ts-mock-imports';
-import { fetchAll, find, workspaceFromToggle, fetchTogglesDependsOn, update } from "./toggle-service";
+import { fetchAll, find, fetchTogglesDependsOn, update, togglesFromWorkspace } from "./toggle-service";
 import 'jest-extended';
 
 
-const stubList = ImportMock.mockFunction(model, 'list', [
-    { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] },
-    { id: 2, name: "Feature B depends A", enabled: false, workspace_id: 1, dependsOn: [1] },
-    { id: 3, name: "Feature C", enabled: false, workspace_id: 1, dependsOn: [] },
-    { id: 4, name: "Feature D", enabled: true, workspace_id: 2, dependsOn: [] },
-    { id: 5, name: "Feature E", enabled: false, workspace_id: 2, dependsOn: [] },
-  ]);
-
 describe('Toggle Service', function () {
+    let stubList: any;
 
     beforeEach(() => {
+        stubList = ImportMock.mockFunction(model, 'list', [
+            { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] },
+            { id: 2, name: "Feature B depends A", enabled: false, workspace_id: 1, dependsOn: [1] },
+            { id: 3, name: "Feature C", enabled: false, workspace_id: 1, dependsOn: [] },
+            { id: 4, name: "Feature D", enabled: true, workspace_id: 2, dependsOn: [] },
+            { id: 5, name: "Feature E", enabled: false, workspace_id: 2, dependsOn: [] },
+          ]);
+    });
+
+    afterEach(() => {
         stubList.restore()
     });
 
@@ -36,13 +39,6 @@ describe('Toggle Service', function () {
 
         expect(result).toEqual(expected);
     });
-
-    it('workspaceFromToggle should return workspace information from toggle', function () {
-        const result = workspaceFromToggle({ id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] });
-        const expected = { id: 1, name: "dev" };
-
-        expect(result).toEqual(expected);
-    })
 
     it('fetchTogglesDependsOn should return toggles information list from specific toggle', function () {
         const targetToggle = { id: 2, name: "Feature B depends A", enabled: false, workspace_id: 1, dependsOn: [1] };
@@ -70,5 +66,32 @@ describe('Toggle Service', function () {
         expect(result).toStrictEqual(expected);
     });
 
+    it('togglesFromWorkspace should return all toggle that belongs to workspace prod', function () {
+        const result = togglesFromWorkspace({ id: 2, name: "prod" });
+        expect(result).toIncludeAllMembers([
+            { id: 4, name: "Feature D", enabled: true, workspace_id: 2, dependsOn: [] },
+            { id: 5, name: "Feature E", enabled: false, workspace_id: 2, dependsOn: [] }
+        ])
+    })
+
+    it('togglesFromWorkspace should return empty list when workspace doesnt exist', function () {
+        const result = togglesFromWorkspace({ id: 3, name: "blah" });
+        expect(result).toBeEmpty()
+    })
+
+    it('togglesFromWorkspace should return empty list when workspace doesnt have toggles', function () {
+        const result = togglesFromWorkspace({ id: 3, name: "intg" });
+        expect(result).toBeEmpty()
+    })
+
+    it('togglesFromWorkspace should return all toggle that belongs to workspace dev', function () {
+        stubList.restore()
+        const result = togglesFromWorkspace({ id: 1, name: "dev" });
+        expect(result).toIncludeAllMembers([
+            { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] },
+            { id: 2, name: "Feature B depends A", enabled: false, workspace_id: 1, dependsOn: [1] },
+            { id: 3, name: "Feature C", enabled: false, workspace_id: 1, dependsOn: [] }
+        ])
+    })
 });
 
