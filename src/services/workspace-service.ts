@@ -1,8 +1,9 @@
 
-import { workspaces, WorkspaceData, toggles } from "../data";
+import { workspaces, WorkspaceData } from "../data";
+import { list } from '../store/toggle-model';
 
 const workspaceByName = (name: string): WorkspaceData | undefined => workspaces.find(workspace => workspace.name === name);
 
-const togglesFromWorkspace = (workspace: WorkspaceData) => toggles.filter(toggle => toggle.workspace_id === workspace.id);
+const togglesFromWorkspace = (workspace: WorkspaceData) => list().filter(toggle => toggle.workspace_id === workspace.id);
 
 export { togglesFromWorkspace, workspaceByName }

@@ -1,11 +1,16 @@
 import *  as model from '../store/toggle-model';
 import { ImportMock } from 'ts-mock-imports';
-import { toggles } from '../data'
 import { fetchAll, find, workspaceFromToggle, fetchTogglesDependsOn, update } from "./toggle-service";
 import 'jest-extended';
 
 
-const stubList = ImportMock.mockFunction(model, 'list', toggles);
+const stubList = ImportMock.mockFunction(model, 'list', [
+    { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] },
+    { id: 2, name: "Feature B depends A", enabled: false, workspace_id: 1, dependsOn: [1] },
+    { id: 3, name: "Feature C", enabled: false, workspace_id: 1, dependsOn: [] },
+    { id: 4, name: "Feature D", enabled: true, workspace_id: 2, dependsOn: [] },
+    { id: 5, name: "Feature E", enabled: false, workspace_id: 2, dependsOn: [] },
+  ]);
 
 describe('Toggle Service', function () {
 
@@ -16,7 +21,13 @@ describe('Toggle Service', function () {
     it('fetchAll should return all toggles', function () {
         const result = fetchAll();
 
-        expect(result).toEqual(toggles);
+        expect(result).toEqual([
+            { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] },
+            { id: 2, name: "Feature B depends A", enabled: false, workspace_id: 1, dependsOn: [1] },
+            { id: 3, name: "Feature C", enabled: false, workspace_id: 1, dependsOn: [] },
+            { id: 4, name: "Feature D", enabled: true, workspace_id: 2, dependsOn: [] },
+            { id: 5, name: "Feature E", enabled: false, workspace_id: 2, dependsOn: [] },
+          ]);
     });
 
     it('find should return toggle with specific id', function () {

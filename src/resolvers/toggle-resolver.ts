@@ -1,32 +1,32 @@
 import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from "type-graphql";
-import { ToggleData } from "../data";
-import Toggle from "../schemas/toggle";
+import { Toggle } from "../store/toggle-model";
 import * as service from "../services/toggle-service"
+import ToggleSchema from "../schemas/toggle";
 
-@Resolver(of => Toggle)
+@Resolver(of => ToggleSchema)
 export default class {
-  @Query(returns => [Toggle])
-  fetchToggles(): ToggleData[] {
+  @Query(returns => [ToggleSchema])
+  fetchToggles(): Toggle[] {
     return service.fetchAll();
   }
 
-  @Query(returns => Toggle, { nullable: true })
-  getToggle(@Arg("id") id: number): ToggleData | undefined {
+  @Query(returns => ToggleSchema, { nullable: true })
+  getToggle(@Arg("id") id: number): Toggle | undefined {
     return service.find(id);
   }
 
-  @Mutation(returns => Toggle)
-  enable(@Arg("toggleId") toggleId: number): ToggleData {
+  @Mutation(returns => ToggleSchema)
+  enable(@Arg("toggleId") toggleId: number): Toggle {
     return service.enable(toggleId);
   }
 
   @FieldResolver()
-  workspace(@Root() toggleData: ToggleData) {
-    return service.workspaceFromToggle(toggleData);
+  workspace(@Root() toggle: Toggle) {
+    return service.workspaceFromToggle(toggle);
   }
 
   @FieldResolver()
-  dependsOn(@Root() toggleData: ToggleData) {
-    return service.fetchTogglesDependsOn(toggleData);
+  dependsOn(@Root() toggle: Toggle) {
+    return service.fetchTogglesDependsOn(toggle);
   }
 }

@@ -1,7 +1,7 @@
-import { workspaces, ToggleData } from "../data";
-import { list } from "../store/toggle-model";
+import { workspaces } from "../data";
+import { Toggle, list } from "../store/toggle-model";
 
-const enable = (toggleId: number): ToggleData => {
+const enable = (toggleId: number): Toggle => {
     const toggle = list().find(toggle => {
         return toggle.id === toggleId;
     });
@@ -15,16 +15,16 @@ const enable = (toggleId: number): ToggleData => {
     return toggle;
 }
 
-const find = (id: number): ToggleData | undefined => list().find(toggle => toggle.id === id);
+const find = (id: number): Toggle | undefined => list().find(toggle => toggle.id === id);
 
-const workspaceFromToggle = (toggle: ToggleData) => workspaces.find(workspace => workspace.id === toggle.workspace_id);
+const workspaceFromToggle = (toggle: Toggle) => workspaces.find(workspace => workspace.id === toggle.workspace_id);
 
 const fetchAll = () => list();
 
-const fetchTogglesDependsOn = (toggle: ToggleData) => list().filter(t => toggle.dependsOn.includes(t.id));
+const fetchTogglesDependsOn = (toggle: Toggle) => list().filter(t => toggle.dependsOn.includes(t.id));
 
-const update = (toggle: ToggleData) => {
-    let result: ToggleData | undefined = find(toggle.id);
+const update = (toggle: Toggle) => {
+    let result: Toggle | undefined = find(toggle.id);
     if(result) {
         result.name = toggle.name;
         result.enabled = toggle.enabled;

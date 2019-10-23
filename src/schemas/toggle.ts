@@ -1,8 +1,8 @@
 import { Field, Int, ObjectType } from "type-graphql";
 import Workspace from "./workspace";
 
-@ObjectType()
-export default class Toggle {
+@ObjectType("Toggle")
+export default class ToggleSchema {
   @Field(type => Int)
   id: number;
 
@@ -15,6 +15,6 @@ export default class Toggle {
   @Field()
   enabled: boolean;
 
-  @Field(type => [Toggle])
-  dependsOn: Toggle[];
+  @Field(type => [ToggleSchema])
+  dependsOn: ToggleSchema[];
 }
