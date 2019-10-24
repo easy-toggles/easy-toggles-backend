@@ -1,5 +1,5 @@
 import { Toggle, list } from "../models/toggle-model";
-import { WorkspaceData } from "../data";
+import { Workspace } from "../models/workspace-model";
 
 const enable = (toggleId: number): Toggle => {
     const toggle = list().find(toggle => {
@@ -33,6 +33,6 @@ const update = (toggle: Toggle) => {
     return result;
 }
 
-const togglesFromWorkspace = (workspace: WorkspaceData) => list().filter(toggle => toggle.workspace_id === workspace.id);
+const togglesFromWorkspace = (workspace: Workspace) => list().filter(toggle => toggle.workspace_id === workspace.id);
 
 export { enable, fetchAll, fetchTogglesDependsOn, find, togglesFromWorkspace, update }

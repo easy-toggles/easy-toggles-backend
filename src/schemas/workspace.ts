@@ -2,7 +2,7 @@ import { Field, Int, ObjectType } from "type-graphql";
 import Toggle from "./toggle";
 
 @ObjectType()
-export default class Workspace {
+export default class WorkspaceSchema {
   @Field(type => Int)
   id: number;
 

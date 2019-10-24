@@ -1,18 +1,18 @@
 import { Arg, FieldResolver, Query, Resolver, Root } from "type-graphql";
-import { WorkspaceData } from "../data";
 import * as toggleService from "../services/toggle-service"
 import * as workspaceService from "../services/workspace-service"
-import Workspace from "../schemas/workspace";
+import WorkspaceSchema from "../schemas/workspace";
+import { Workspace } from "../models/workspace-model";
 
-@Resolver(of => Workspace)
+@Resolver(of => WorkspaceSchema)
 export default class {
-  @Query(returns => Workspace, { nullable: true })
-  workspaceByName(@Arg("name") name: string): WorkspaceData | undefined {
+  @Query(returns => WorkspaceSchema, { nullable: true })
+  workspaceByName(@Arg("name") name: string): Workspace | undefined {
     return workspaceService.workspaceByName(name);
   }
 
   @FieldResolver()
-  toggles(@Root() workspaceData: WorkspaceData): WorkspaceData[] {
-    return toggleService.togglesFromWorkspace(workspaceData);
+  toggles(@Root() workspace: Workspace): Workspace[] {
+    return toggleService.togglesFromWorkspace(workspace);
   }
 }
