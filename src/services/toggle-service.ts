@@ -1,4 +1,4 @@
-import { Toggle, list } from "../store/toggle-model";
+import { Toggle, list } from "../models/toggle-model";
 import { WorkspaceData } from "../data";
 
 const enable = (toggleId: number): Toggle => {

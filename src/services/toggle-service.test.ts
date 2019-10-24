@@ -1,4 +1,4 @@
-import *  as model from '../store/toggle-model';
+import *  as model from '../models/toggle-model';
 import { ImportMock } from 'ts-mock-imports';
 import { fetchAll, find, fetchTogglesDependsOn, update, togglesFromWorkspace } from "./toggle-service";
 import 'jest-extended';

@@ -1,5 +1,5 @@
 import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from "type-graphql";
-import { Toggle } from "../store/toggle-model";
+import { Toggle } from "../models/toggle-model";
 import * as toggleService from "../services/toggle-service"
 import * as workspaceService from "../services/workspace-service"
 import ToggleSchema from "../schemas/toggle";

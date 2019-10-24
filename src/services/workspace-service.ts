@@ -1,6 +1,6 @@
 
 import { workspaces, WorkspaceData } from "../data";
-import { Toggle } from '../store/toggle-model';
+import { Toggle } from '../models/toggle-model';
 
 const workspaceByName = (name: string): WorkspaceData | undefined => workspaces.find(workspace => workspace.name === name);
 
