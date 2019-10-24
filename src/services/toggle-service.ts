@@ -28,6 +28,8 @@ const update = (toggle: Toggle) => {
         result.enabled = toggle.enabled;
         // result.workspace_id = toggle.workspace_id;
         // result.dependsOn = toggle.dependsOn;
+    } else {
+        throw new Error(`Couldn't find the toggle with id ${toggle.id}`);
     }
 
     return result;

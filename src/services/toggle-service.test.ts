@@ -66,6 +66,13 @@ describe('Toggle Service', function () {
         expect(result).toStrictEqual(expected);
     });
 
+    it('update should update the referenced toggle`s id enable flag when an existent id and a diffrent status are passed', () => {
+        function updateToggle() {
+            update({ id: 42, name: "Feature X", enabled: true, workspace_id: 1, dependsOn: [] })
+        }
+        expect(updateToggle).toThrowError(/^Couldn't find the toggle with id 42$/);
+    });
+
     it('togglesFromWorkspace should return all toggle that belongs to workspace prod', function () {
         const result = togglesFromWorkspace({ id: 2, name: "prod" });
         expect(result).toIncludeAllMembers([
