@@ -1,9 +1,9 @@
 import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from "type-graphql";
-import { Toggle } from "../models/toggle-model";
-import * as toggleService from "../services/toggle-service"
-import * as workspaceService from "../services/workspace-service"
+import { Toggle } from "../models/toggle.model";
+import * as toggleService from "../services/toggle.service"
+import * as workspaceService from "../services/workspace.service"
 import * as assertionService from "../services/assertion.service";
-import ToggleSchema from "../schemas/toggle";
+import ToggleSchema from "../schemas/toggle.schema";
 import { IAssertionSchema } from "../schemas/assertion.schema";
 
 @Resolver(of => ToggleSchema)

@@ -1,6 +1,6 @@
-import { workspaceByName, workspaceFromToggle } from "./workspace-service";
+import { workspaceByName, workspaceFromToggle } from "./workspace.service";
 import { ImportMock } from "ts-mock-imports";
-import * as model from "../models/workspace-model";
+import * as model from "../models/workspace.model";
 import 'jest-extended';
 
 describe('Workspce Service', function () {

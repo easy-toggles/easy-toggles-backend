@@ -1,8 +1,8 @@
 import { Arg, FieldResolver, Query, Resolver, Root } from "type-graphql";
-import * as toggleService from "../services/toggle-service"
-import * as workspaceService from "../services/workspace-service"
-import WorkspaceSchema from "../schemas/workspace";
-import { Workspace } from "../models/workspace-model";
+import * as toggleService from "../services/toggle.service"
+import * as workspaceService from "../services/workspace.service"
+import WorkspaceSchema from "../schemas/workspace.schema";
+import { Workspace } from "../models/workspace.model";
 
 @Resolver(of => WorkspaceSchema)
 export default class {

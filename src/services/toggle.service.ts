@@ -1,5 +1,5 @@
-import { Toggle, list } from "../models/toggle-model";
-import { Workspace } from "../models/workspace-model";
+import { Toggle, list } from "../models/toggle.model";
+import { Workspace } from "../models/workspace.model";
 
 const enable = (toggleId: number): Toggle => {
     const toggle = list().find(toggle => {

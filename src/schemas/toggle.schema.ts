@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from "type-graphql";
-import Workspace from "./workspace";
+import Workspace from "./workspace.schema";
 import { IAssertionSchema }  from "./assertion.schema";
 
 @ObjectType("Toggle")
