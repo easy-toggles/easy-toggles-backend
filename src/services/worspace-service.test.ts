@@ -33,7 +33,7 @@ describe('Workspce Service', function () {
     })
 
     it('workspaceFromToggle should return workspace information from toggle', function () {
-        const result = workspaceFromToggle({ id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [] });
+        const result = workspaceFromToggle({ id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [], assertions: [] });
         const expected = { id: 1, name: "dev" };
 
         expect(result).toEqual(expected);

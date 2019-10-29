@@ -3,12 +3,32 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type ExpectSchema implements IAssertionSchema {
+  value: String!
+  not: Boolean!
+}
+
+type ExpectToBeEqualSchema implements IAssertionSchema {
+  value: String!
+  not: Boolean!
+  toBeEqualTo: String!
+}
+
+type ExpectToIncludeAllMembersSchema implements IAssertionSchema {
+  value: String!
+  toIncludeAllMembers: [String!]!
+}
+
+interface IAssertionSchema {
+  value: String!
+}
+
 type Mutation {
   enable(toggleId: Float!): Toggle!
 }
 
 type Query {
-  workspaceByName(name: String!): Workspace
+  workspaceByName(name: String!): WorkspaceSchema
   fetchToggles: [Toggle!]!
   getToggle(id: Float!): Toggle
 }
@@ -16,12 +36,13 @@ type Query {
 type Toggle {
   id: Int!
   name: String!
-  workspace: Workspace!
+  workspace: WorkspaceSchema!
   enabled: Boolean!
   dependsOn: [Toggle!]!
+  assertions: [IAssertionSchema!]
 }
 
-type Workspace {
+type WorkspaceSchema {
   id: Int!
   name: String!
   toggles: [Toggle!]!

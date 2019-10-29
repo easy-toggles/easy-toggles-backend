@@ -2,7 +2,9 @@ import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from "type-graphq
 import { Toggle } from "../models/toggle-model";
 import * as toggleService from "../services/toggle-service"
 import * as workspaceService from "../services/workspace-service"
+import * as assertionService from "../services/assertion.service";
 import ToggleSchema from "../schemas/toggle";
+import { IAssertionSchema } from "../schemas/assertion.schema";
 
 @Resolver(of => ToggleSchema)
 export default class {
@@ -29,5 +31,10 @@ export default class {
   @FieldResolver()
   dependsOn(@Root() toggle: Toggle) {
     return toggleService.fetchTogglesDependsOn(toggle);
+  }
+
+  @FieldResolver()
+    assertions(@Root() toggle: Toggle): IAssertionSchema[] | undefined {
+      return assertionService.find(toggle.id)
   }
 }

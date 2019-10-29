@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "type-graphql";
 import Workspace from "./workspace";
+import { IAssertionSchema }  from "./assertion.schema";
 
 @ObjectType("Toggle")
 export default class ToggleSchema {
@@ -17,4 +18,7 @@ export default class ToggleSchema {
 
   @Field(type => [ToggleSchema])
   dependsOn: ToggleSchema[];
+
+  @Field(type => [IAssertionSchema], {nullable: true})
+  assertions: IAssertionSchema[] | undefined;
 }
