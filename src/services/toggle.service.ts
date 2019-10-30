@@ -15,19 +15,39 @@ const enable = (toggleId: number): Toggle => {
     return toggle;
 }
 
-const find = (id: number): Toggle | undefined => list().find(toggle => toggle.id === id);
+const find = (id: number | undefined): Toggle | undefined => list().find(toggle => toggle.id === id);
 
 const fetchAll = () => list();
 
 const fetchTogglesDependsOn = (toggle: Toggle) => list().filter(t => toggle.dependsOn.includes(t.id));
 
+const checkCircularDependency = (list: Array<number>) => {
+    let visited: number[] = []
+    let queue: Array<number> = list.slice(0);
+
+    while (queue.length) {
+        let next = queue.pop();
+        if(next) {
+            if (visited.includes(next)) {
+                throw new Error(`Toggle id ${next} is closing a circular dependency`);
+            }
+            let element = find(next)
+            if (element) {
+                queue.push(...element.dependsOn)
+            }
+            visited.push(next)
+        }
+    }
+}
+
 const update = (toggle: Toggle) => {
     let result: Toggle | undefined = find(toggle.id);
     if(result) {
+        checkCircularDependency([toggle.id, ...toggle.dependsOn])
         result.name = toggle.name;
         result.enabled = toggle.enabled;
-        // result.workspace_id = toggle.workspace_id;
-        // result.dependsOn = toggle.dependsOn;
+        result.workspace_id = toggle.workspace_id;
+        result.dependsOn = toggle.dependsOn;
     } else {
         throw new Error(`Couldn't find the toggle with id ${toggle.id}`);
     }

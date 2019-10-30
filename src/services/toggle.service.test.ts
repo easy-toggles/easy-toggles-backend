@@ -48,7 +48,7 @@ describe('Toggle Service', function () {
         expect(result).toIncludeAllMembers(expected);
     })
 
-    it('update should update the referenced toggle`s id name when an existent id and a diffrent name are passed', () => {
+    it('should update the referenced toggle`s id name when an existent id and a diffrent name are passed', () => {
         let targetToggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [], assertions: [] };
         targetToggle.name = "Feature 2A";
         const result = update(targetToggle);
@@ -57,7 +57,7 @@ describe('Toggle Service', function () {
         expect(result).toStrictEqual(expected);
     });
 
-    it('update should update the referenced toggle`s id enable flag when an existent id and a diffrent status are passed', () => {
+    it('should update the referenced toggle`s id enable flag when an existent id and a diffrent status are passed', () => {
         let targetToggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [], assertions: [] };
         targetToggle.enabled = !targetToggle.enabled;
         const result = update(targetToggle);
@@ -66,11 +66,57 @@ describe('Toggle Service', function () {
         expect(result).toStrictEqual(expected);
     });
 
-    it('update should update the referenced toggle`s id enable flag when an existent id and a diffrent status are passed', () => {
+    it('should throw and expection when an unexisted toggle`s id are passed to update', () => {
         function updateToggle() {
             update({ id: 42, name: "Feature X", enabled: true, workspace_id: 1, dependsOn: [], assertions: [] })
         }
         expect(updateToggle).toThrowError(/^Couldn't find the toggle with id 42$/);
+    });
+
+    it('should update the workspace_id given an existing toggle id', () => {
+        let targetToggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [], assertions: [] };
+        targetToggle.workspace_id = 15;
+        const result = update(targetToggle);
+        const expected = { id: 1, name: "Feature A", enabled: true, workspace_id: 15, dependsOn: [], assertions: [] };
+
+        expect(result).toStrictEqual(expected)
+    });
+
+    it('should update the dependsOn list given an existing toggle id', () => {
+        let targetToggle : model.Toggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [], assertions: [] };
+        targetToggle.dependsOn.push(42);
+        const result = update(targetToggle);
+        const expected = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [42], assertions: [] };
+
+        expect(result).toStrictEqual(expected)
+    });
+
+    it('should throw and expection when denpendsOn chains B => A => B with the update', () => {
+        function updateToggle() {
+            let targetToggle : model.Toggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [2], assertions: [] };
+            update(targetToggle)
+        }
+        expect(updateToggle).toThrowError(/^Toggle id 1 is closing a circular dependency$/);
+    });
+
+    it('should throw and expection when denpendsOn chains B => A => C => B with the update', () => {
+        function updateToggles() {
+            let AdependsC : model.Toggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [3], assertions: [] };
+            let CdependsB : model.Toggle = { id: 3, name: "Feature C", enabled: true, workspace_id: 1, dependsOn: [2], assertions: [] };
+            update(AdependsC)
+            update(CdependsB)
+        }
+        expect(updateToggles).toThrowError(/^Toggle id 3 is closing a circular dependency$/);
+    });
+
+    it('should throw and expection when denpendsOn chains B => A => C and D => B with the update', () => {
+        function updateToggles() {
+            let AdependsC : model.Toggle = { id: 1, name: "Feature A", enabled: true, workspace_id: 1, dependsOn: [3, 4], assertions: [] };
+            let CdependsB : model.Toggle = { id: 3, name: "Feature C", enabled: true, workspace_id: 1, dependsOn: [2], assertions: [] };
+            update(AdependsC)
+            update(CdependsB)
+        }
+        expect(updateToggles).toThrowError(/^Toggle id 3 is closing a circular dependency$/);
     });
 
     it('togglesFromWorkspace should return all toggle that belongs to workspace prod', function () {
