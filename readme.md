@@ -27,3 +27,22 @@ The purpose of this is to provide a flexible interface so the client can work wi
 
 Its a group of toggles.
 
+## Contributing
+
+### Running locally
+
+```sh
+$ npm install
+
+$ npm run start:dev
+```
+
+### Running tests
+
+```sh
+$ npm test
+```
+
+## Teckstack
+
+- GraphQL
