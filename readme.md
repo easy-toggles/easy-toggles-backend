@@ -43,6 +43,7 @@ $ npm run start:dev
 $ npm test
 ```
 
-## Teckstack
+## Techstack
 
 - GraphQL
+- Typescript
