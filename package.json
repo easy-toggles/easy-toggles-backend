@@ -37,7 +37,7 @@
     "koa-bodyparser": "^4.2.1",
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
-    "nconf": "^0.10.0",
+    "nconf": "^0.11.4",
     "ramda": "^0.26.1",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^0.17.5"
